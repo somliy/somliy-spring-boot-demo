@@ -1,0 +1,51 @@
+server:
+  port: 9091
+
+spring:
+  kafka:
+    bootstrap-servers: 127.0.0.1:9092  #bootstrap-servers：连接kafka的地址，多个地址用逗号分隔
+    consumer:
+      group-id: myGroup
+      enable-auto-commit: false
+      auto-commit-interval: 100ms
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
+      auto-offset-reset: earliest
+      properties:
+        spring:
+          json:
+            trusted:
+              # 配置 信任， 不认会抛异常 is not in the trusted packages
+              packages: top.somliy.kafka.message
+        session.timeout.ms: 15000
+        security.protocol: SASL_PLAINTEXT
+        sasl.mechanism: PLAIN
+        sasl.jaas.config: org.apache.kafka.common.security.scram.ScramLoginModule
+          required username="admin" password="admin-secret";
+    producer:
+      retries: 0 #若设置大于0的值，客户端会将发送失败的记录重新发送
+      batch-size: 16384 #当将多个记录被发送到同一个分区时， Producer 将尝试将记录组合到更少地请求中。这有助于提升客户端和服务器端的性能。这个配置控制一个批次的默认大小（以字节为单位）。16384是缺省的配置
+      buffer-memory: 33554432 #Producer 用来缓冲等待被发送到服务器的记录的总字节数，33554432是缺省配置
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer # 消息的 key 的序列化
+      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer # 消息的 value 的序列化
+      properties:
+        session.timeout.ms: 15000
+        security.protocol: SASL_PLAINTEXT
+        sasl.mechanism: PLAIN
+        sasl.jaas.config: org.apache.kafka.common.security.scram.ScramLoginModule
+          required username="admin" password="admin-secret";
+
+
+
+project:
+  kafka:
+    topicIds: somliy-test
+    groupId: group-id-1
+
+logging:
+  level:
+    org:
+      springframework:
+        kafka: info
+      apache:
+        kafka: info
