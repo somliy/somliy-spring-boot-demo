@@ -24,15 +24,15 @@
 
 #### property填写
 
-![image-20230321232627652](/Users/somliy/Documents/blog/somliy-blog/Kafka-demo/Kafka.assets/image-20230321232627652.png)
+![image-20230321232627652](./Kafka.assets/image-20230321232627652.png)
 
 #### Security填写
 
-![image-20230321232653436](/Users/somliy/Documents/blog/somliy-blog/Kafka-demo/Kafka.assets/image-20230321232653436.png)
+![image-20230321232653436](./Kafka.assets/image-20230321232653436.png)
 
 #### Advanced填写
 
-![image-20230321232732935](/Users/somliy/Documents/blog/somliy-blog/Kafka-demo/Kafka.assets/image-20230321232732935.png)
+![image-20230321232732935](./Kafka.assets/image-20230321232732935.png)
 
 #### JAAS Config填写
 
@@ -42,4 +42,4 @@
 org.apache.kafka.common.security.plain.PlainLoginModule required username="admin" password="admin-secret";
 ```
 
-![image-20230321232747314](/Users/somliy/Documents/blog/somliy-blog/Kafka-demo/Kafka.assets/image-20230321232747314.png)
+![image-20230321232747314](./Kafka.assets/image-20230321232747314.png)
