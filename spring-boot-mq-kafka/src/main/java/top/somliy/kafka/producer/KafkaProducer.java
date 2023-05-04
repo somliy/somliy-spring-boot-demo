@@ -8,7 +8,7 @@ import org.springframework.kafka.support.SendResult;
 import org.springframework.stereotype.Component;
 import org.springframework.util.concurrent.ListenableFuture;
 import top.somliy.kafka.message.KafkaMessage;
-import top.somliy.kafka.properties.KafkaProperties;
+import top.somliy.kafka.producer.properties.KafkaProducerProperties;
 
 import java.time.LocalDateTime;
 import java.util.UUID;
@@ -28,7 +28,7 @@ public class KafkaProducer {
     private KafkaTemplate<Object, Object> kafkaTemplate;
 
     @Autowired
-    private KafkaProperties kafkaProperties;
+    private KafkaProducerProperties kafkaProducerProperties;
 
     /**
      * 发送同步消息
@@ -48,7 +48,7 @@ public class KafkaProducer {
         message.setId(uuid);
         message.setSendTime(LocalDateTime.now());
         // 同步发送消息，使用 ListenableFuture 对象的 get() 方法，阻塞等待发送结果，从而实现同步的效果
-        return kafkaTemplate.send(kafkaProperties.getTopicIds(), message).get();
+        return kafkaTemplate.send(kafkaProducerProperties.getTopic1(), message).get();
     }
 
 
@@ -65,6 +65,6 @@ public class KafkaProducer {
         message.setId(uuid);
         message.setSendTime(LocalDateTime.now());
         // 异步发送消息
-        return kafkaTemplate.send(kafkaProperties.getTopicIds(), message);
+        return kafkaTemplate.send(kafkaProducerProperties.getTopic1(), message);
     }
 }

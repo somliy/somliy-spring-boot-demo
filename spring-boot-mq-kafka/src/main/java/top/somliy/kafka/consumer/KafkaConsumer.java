@@ -1,9 +1,11 @@
 package top.somliy.kafka.consumer;
 
 import lombok.extern.slf4j.Slf4j;
+import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.stereotype.Component;
-import top.somliy.kafka.message.KafkaMessage;
+
+import java.util.Optional;
 
 /**
  * 类名： @ClassName KafkaConsumer
@@ -18,11 +20,22 @@ public class KafkaConsumer {
     /**
      * kafka监听消息
      *
-     * @param kafkaMessage 消息
+     * @param consumerRecord 消息
      */
-    @KafkaListener(topics = "#{'${topicIds}'.split(',')}", groupId = "${groupId}")
-    public void onMessage(KafkaMessage kafkaMessage) {
-        log.info("[线程编号:{} 消息内容：{}]", Thread.currentThread().getId(), kafkaMessage);
+    @KafkaListener(topics = "${project.kafka.consumer.topic1}", groupId = "${project.kafka.consumer.group1}")
+    public void onMessage(ConsumerRecord<Object, Object> consumerRecord) {
+        log.info("【kafka】接收到消息:" + consumerRecord.value());
+        try {
+            Optional<?> kafkaMessage = Optional.ofNullable(consumerRecord.value());
+            if (kafkaMessage.isPresent()) {
+                Object message = consumerRecord.value();
+                log.info("【kafka】接收到消息" + message.toString());
+            } else {
+                log.error("【kafka】接收到消息为空");
+            }
+        } catch (Exception e) {
+            log.error("【kafka】接收到消息为空" + e.getMessage());
+        }
     }
 }
 

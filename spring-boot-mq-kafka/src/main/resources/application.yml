@@ -39,8 +39,12 @@ spring:
 
 project:
   kafka:
-    topicIds: somliy-test
-    groupId: group-id-1
+    consumer:
+      topic1: topic-test-01
+      group1: group-test-01
+    producer:
+      topic1: topic-test-01
+      group1: group-test-01
 
 logging:
   level:
