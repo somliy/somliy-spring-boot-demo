@@ -29,7 +29,7 @@ public class SpringBootMqKafkaTest {
     void testSyncSend() {
         String string = UUID.randomUUID().toString();
         SendResult<Object, Object> objectObjectSendResult = kafkaProducer.syncSend(string);
-        System.out.println(objectObjectSendResult);
+        log.info(objectObjectSendResult.toString());
     }
 
     @SneakyThrows
