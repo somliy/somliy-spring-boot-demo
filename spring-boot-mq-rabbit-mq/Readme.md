@@ -1,3 +1,5 @@
+# 从零开始，5分钟轻松实现Spring Boot与RabbitMQ的无缝集成
+
 ## 🌏 环境
 - docker v4.16.2
 - springboot 2.7.0
@@ -79,7 +81,11 @@ public void syncSendDelayed(String data, String routingKey, int delay) {
 }
 ```  
 
-
+## 📚 测试效果
+消息发送
+![[Pasted image 20230610164403.png]]
+数据接收
+![[Pasted image 20230610164452.png]]
 ## 常见问题
 
 ### vhost not fond 问题
