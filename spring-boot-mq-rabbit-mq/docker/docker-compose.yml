@@ -11,7 +11,7 @@ services:
     volumes:                            # 数据卷挂载路径设置,将本机目录映射到容器目录
       #      - "./rabbitmq/config/rabbitmq.conf:/etc/rabbitmq/rabbitmq.conf"
       #      - "./rabbitmq/config/10-default-guest-user.conf:/etc/rabbitmq/conf.d/10-default-guest-user.conf"
-      - "./rabbitmq/data:/var/lib/rabbitmq"
+      #      - "./rabbitmq/data:/var/lib/rabbitmq"
       - "./rabbitmq/plugins/rabbitmq_delayed_message_exchange-3.9.0.ez:/opt/rabbitmq/plugins/rabbitmq_delayed_message_exchange-3.9.0.ez"
     #      - "./rabbitmq/log:/var/log/rabbitmq"
     ports:                              # 映射端口
