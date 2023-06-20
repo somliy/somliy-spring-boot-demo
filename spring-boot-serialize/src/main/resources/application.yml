@@ -1,0 +1,4 @@
+server:
+  servlet: # 建议与name一致
+    context-path: /spring-boot-serialize
+  port: 9094
