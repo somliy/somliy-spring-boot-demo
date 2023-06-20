@@ -37,4 +37,9 @@ public class DateEntity {
 
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date date5;
+
+    @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
+    private Date date6;
+
+    private Date date7;
 }

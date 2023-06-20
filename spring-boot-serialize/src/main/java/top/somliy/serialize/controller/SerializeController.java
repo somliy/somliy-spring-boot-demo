@@ -4,6 +4,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import top.somliy.serialize.entity.DateAnnotationEntity;
 import top.somliy.serialize.entity.DateEntity;
 
 /**
@@ -15,6 +16,17 @@ import top.somliy.serialize.entity.DateEntity;
 @RestController
 @RequestMapping("serialize")
 public class SerializeController {
+
+    /**
+     * 日期序列化
+     *
+     * @param dateAnnotationEntity 实体
+     * @return 结果
+     */
+    @PostMapping("testAnnotationDate")
+    public DateAnnotationEntity testAnnotationDate(@RequestBody DateAnnotationEntity dateAnnotationEntity) {
+        return dateAnnotationEntity;
+    }
 
     /**
      * 日期序列化
