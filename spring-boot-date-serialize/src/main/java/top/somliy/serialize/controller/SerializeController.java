@@ -38,4 +38,15 @@ public class SerializeController {
     public DateEntity testDate(@RequestBody DateEntity dateEntity) {
         return dateEntity;
     }
+
+    /**
+     * 日期序列化
+     *
+     * @param dateAnnotationEntity 实体
+     * @return 结果
+     */
+    @PostMapping("testForm")
+    public DateAnnotationEntity testForm(DateAnnotationEntity dateAnnotationEntity) {
+        return dateAnnotationEntity;
+    }
 }

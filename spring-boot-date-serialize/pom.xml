@@ -9,10 +9,10 @@
     </parent>
 
     <groupId>top.somliy.serialize</groupId>
-    <artifactId>spring-boot-serialize</artifactId>
+    <artifactId>spring-boot-date-serialize</artifactId>
     <version>1.0.0-SNAPSHOT</version>
 
-    <name>spring-boot-serialize</name>
+    <name>spring-boot-date-serialize</name>
     <description>spring boot 序列化示例</description>
 
     <properties>
@@ -45,6 +45,6 @@
         </dependency>
     </dependencies>
     <build>
-        <finalName>spring-boot-serialize</finalName>
+        <finalName>spring-boot-date-serialize</finalName>
     </build>
 </project>
