@@ -1,0 +1,20 @@
+server:
+  servlet: # 建议与name一致
+    context-path: /spring-boot-current-limiting
+  port: 9094
+
+spring:
+  redis:
+    host: 127.0.0.1
+    port: 6379
+    password:
+    database: 5
+    lettuce:
+      pool:
+        max-idle: 16
+        max-active: 32
+        min-idle: 8
+
+  devtools:
+    restart:
+      enable: true
