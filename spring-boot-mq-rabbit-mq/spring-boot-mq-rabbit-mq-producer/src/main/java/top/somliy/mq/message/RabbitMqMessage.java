@@ -11,6 +11,7 @@ import java.time.LocalDateTime;
  */
 public class RabbitMqMessage implements Serializable {
 
+    private static final long serialVersionUID = -7835984207101134438L;
     private String id;
 
     private String data;

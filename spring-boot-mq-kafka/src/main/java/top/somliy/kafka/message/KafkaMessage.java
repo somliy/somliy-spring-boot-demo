@@ -10,6 +10,7 @@ import java.time.LocalDateTime;
  * 创建时间: 2023/3/12 22:29
  */
 public class KafkaMessage implements Serializable {
+    private static final long serialVersionUID = -918965225683254278L;
     private String id;
 
     private String data;
