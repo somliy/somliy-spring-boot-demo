@@ -20,6 +20,7 @@
         <module>spring-boot-mq-rabbit-mq</module>
         <module>spring-boot-date-serialize</module>
         <module>spring-boot-current-limiting</module>
+        <module>spring-boot-websocket</module>
     </modules>
 
 </project>
