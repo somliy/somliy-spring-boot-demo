@@ -3,6 +3,7 @@ package top.somliy.websocket.websocket.interceptor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.server.ServerHttpRequest;
 import org.springframework.http.server.ServerHttpResponse;
+import org.springframework.stereotype.Component;
 import org.springframework.web.socket.WebSocketHandler;
 import org.springframework.web.socket.server.HandshakeInterceptor;
 
@@ -15,6 +16,7 @@ import java.util.Map;
  * 创建时间: 2023/10/8 16:13
  */
 @Slf4j
+@Component
 public class ServletWebSocketHandshakeInterceptor implements HandshakeInterceptor {
 
     @Override
