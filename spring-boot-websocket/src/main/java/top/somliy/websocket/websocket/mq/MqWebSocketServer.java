@@ -1,7 +1,6 @@
 package top.somliy.websocket.websocket.mq;
 
 import org.springframework.stereotype.Component;
-import top.somliy.websocket.websocket.config.GetHttpSessionConfigurator;
 import top.somliy.websocket.websocket.core.AbstractWebSocketServer;
 
 import javax.websocket.Session;
@@ -14,8 +13,8 @@ import javax.websocket.server.ServerEndpoint;
  * 创建时间: 2023/10/8 10:19
  */
 @Component
-//@ServerEndpoint(value = "/websocket/{key}")
-@ServerEndpoint(value = "/websocket/{key}", configurator = GetHttpSessionConfigurator.class)
+@ServerEndpoint(value = "/websocket/{key}")
+//@ServerEndpoint(value = "/websocket/{key}", configurator = GetHttpSessionConfigurator.class)
 public class MqWebSocketServer extends AbstractWebSocketServer {
     @Override
     public void onOpen(Session session, String key) {

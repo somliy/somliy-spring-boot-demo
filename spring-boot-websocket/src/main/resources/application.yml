@@ -1,7 +1,7 @@
 server:
   servlet: # 建议与name一致
     context-path: /spring-boot-websocket
-  port: 9094
+  port: 9095
 
 logging:
   level:
@@ -11,10 +11,10 @@ logging:
         kafka: debug
       apache:
         kafka: debug
-    root: info
+    root: debug
 
 project:
   websocket:
     timeoutPeriod: 20000
-    textMessageSize: 100000
-    binaryMessageSize: 100000
+    textMessageSize: 1000000
+    binaryMessageSize: 1000000
