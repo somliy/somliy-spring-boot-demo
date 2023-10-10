@@ -12,7 +12,7 @@ public class SessionExt {
 
     private Session session;
 
-    private Long timestamp;
+    private Long uniqueId;
 
     public boolean getSessionIsOpen() {
         return session.isOpen();
@@ -26,16 +26,16 @@ public class SessionExt {
         this.session = session;
     }
 
-    public Long getTimestamp() {
-        return timestamp;
+    public Long getUniqueId() {
+        return uniqueId;
     }
 
-    public void setTimestamp(Long timestamp) {
-        this.timestamp = timestamp;
+    public void setUniqueId(Long uniqueId) {
+        this.uniqueId = uniqueId;
     }
 
     @Override
     public String toString() {
-        return "SessionExt{" + "session=" + session + ", timestamp=" + timestamp + '}';
+        return "SessionExt{" + "session=" + session + ", uniqueId=" + uniqueId + '}';
     }
 }

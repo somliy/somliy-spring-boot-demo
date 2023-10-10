@@ -1,6 +1,7 @@
 package top.somliy.websocket.websocket.core;
 
 
+import cn.hutool.core.util.IdUtil;
 import cn.hutool.extra.spring.SpringUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
@@ -134,10 +135,10 @@ public abstract class AbstractWebSocketServer implements WebSocketServer {
         } else {
             session.setMaxIdleTimeout(WebSocketConstants.TIME_OUT);
         }
-        Long timeMillis = System.currentTimeMillis();
         SessionExt sessionExt = new SessionExt();
         sessionExt.setSession(session);
-        sessionExt.setTimestamp(timeMillis);
+        long id = IdUtil.getSnowflake().nextId();
+        sessionExt.setUniqueId(id);
         return sessionExt;
     }
 }
