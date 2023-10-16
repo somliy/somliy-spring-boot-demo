@@ -6,7 +6,10 @@ import org.springframework.http.server.ServerHttpResponse;
 import org.springframework.stereotype.Component;
 import org.springframework.web.socket.WebSocketHandler;
 import org.springframework.web.socket.server.HandshakeInterceptor;
+import top.somliy.websocket.websocket.constants.WebSocketConstants;
 
+import java.net.URI;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -20,10 +23,11 @@ import java.util.Map;
 public class ServletWebSocketHandshakeInterceptor implements HandshakeInterceptor {
 
     @Override
-    public boolean beforeHandshake(ServerHttpRequest request, ServerHttpResponse response,
-                                   WebSocketHandler wsHandler, Map<String, Object> attributes) throws Exception {
+    public boolean beforeHandshake(ServerHttpRequest request, ServerHttpResponse response, WebSocketHandler wsHandler,
+                                   Map<String, Object> attributes) throws Exception {
         // 验证令牌
         log.info("beforeHandshake");
+        // 获取认证信息并验证用户角色等权限信息
         return true;
     }
 

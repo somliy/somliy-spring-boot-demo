@@ -13,11 +13,10 @@ import javax.websocket.server.ServerEndpoint;
  * 创建时间: 2023/10/8 10:19
  */
 @Component
-@ServerEndpoint(value = "/websocket/{key}")
-//@ServerEndpoint(value = "/websocket/{key}", configurator = GetHttpSessionConfigurator.class)
 public class MqWebSocketServer extends AbstractWebSocketServer {
     @Override
     public void onOpen(Session session, String key) {
+        System.out.println(123);
 
     }
 
