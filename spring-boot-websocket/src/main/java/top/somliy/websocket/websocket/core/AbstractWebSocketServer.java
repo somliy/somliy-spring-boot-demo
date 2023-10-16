@@ -2,6 +2,7 @@ package top.somliy.websocket.websocket.core;
 
 
 import cn.hutool.core.util.IdUtil;
+import cn.hutool.core.util.StrUtil;
 import cn.hutool.extra.spring.SpringUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
@@ -26,16 +27,16 @@ import java.util.concurrent.ConcurrentHashMap;
 @Slf4j
 @Component
 public abstract class AbstractWebSocketServer implements WebSocketServer {
-    private static final ConcurrentHashMap<String, SessionExt> SESSION_MAP =
-            new ConcurrentHashMap<>(WebSocketConstants.INT_16);
     private static final WebSocketProperty WEB_SOCKET_PROPERTY = SpringUtil.getBean(WebSocketProperty.class);
+    private static final SessionContainer SESSION_CONTAINER = SpringUtil.getBean(SessionContainer.class);
 
     @OnOpen
     @Override
     public void open(Session session, @PathParam("key") String key) {
-        log.debug("[WebSocket]创建链接key:" + key);
+        log.info("[WebSocket]创建链接key:" + key);
         SessionExt sessionExt = this.handleSession(session);
-        SESSION_MAP.put(key, sessionExt);
+        SESSION_CONTAINER.addSessionExtAndClose(key, sessionExt);
+        this.handleFanout(sessionExt, key);
         this.onOpen(session, key);
     }
 
@@ -55,7 +56,7 @@ public abstract class AbstractWebSocketServer implements WebSocketServer {
      */
     public void send(String message, @PathParam("key") String key) {
         log.debug("[WebSocket]发送消息key:" + key);
-        SessionExt sessionExt = SESSION_MAP.get(key);
+        SessionExt sessionExt = SESSION_CONTAINER.getSessionExt(key);
         if (sessionExt != null && sessionExt.getSessionIsOpen()) {
             Session session = sessionExt.getSession();
             try {
@@ -71,7 +72,7 @@ public abstract class AbstractWebSocketServer implements WebSocketServer {
     @OnMessage
     @Override
     public void message(Session session, String message, @PathParam("key") String key) {
-        log.debug("[WebSocket]接收消息key:" + key);
+        log.info("[WebSocket]接收消息key:" + key);
         this.onMessage(message, session, key);
     }
 
@@ -87,7 +88,7 @@ public abstract class AbstractWebSocketServer implements WebSocketServer {
     @OnClose
     @Override
     public void close(Session session, @PathParam("key") String key) {
-        log.debug("[WebSocket]关闭链接key:" + key);
+        log.info("[WebSocket]关闭链接key:" + key);
         this.onClose(session, key);
     }
 
@@ -137,8 +138,17 @@ public abstract class AbstractWebSocketServer implements WebSocketServer {
         }
         SessionExt sessionExt = new SessionExt();
         sessionExt.setSession(session);
-        long id = IdUtil.getSnowflake().nextId();
-        sessionExt.setUniqueId(id);
+        sessionExt.setVersion(WebSocketConstants.INT_1);
+        String uuidString = IdUtil.fastSimpleUUID();
+        sessionExt.setUniqueId(uuidString);
         return sessionExt;
     }
+
+    /**
+     * 处理广播
+     *
+     * @param sessionExt sessionExt
+     * @param key        key
+     */
+    public abstract void handleFanout(SessionExt sessionExt, String key);
 }

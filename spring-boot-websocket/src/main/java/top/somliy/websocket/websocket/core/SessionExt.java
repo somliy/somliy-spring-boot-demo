@@ -1,6 +1,7 @@
 package top.somliy.websocket.websocket.core;
 
 import javax.websocket.Session;
+import java.io.IOException;
 
 /**
  * 类名： @ClassName SessionExt
@@ -12,10 +13,30 @@ public class SessionExt {
 
     private Session session;
 
-    private Long uniqueId;
+    private String uniqueId;
+
+    private Integer version;
+
+    public Integer getVersion() {
+        return version;
+    }
+
+    public void setVersion(Integer version) {
+        this.version = version;
+    }
 
     public boolean getSessionIsOpen() {
         return session.isOpen();
+    }
+
+    /**
+     * 关闭session连接
+     */
+    public void closeSession() {
+        boolean open = session.isOpen();
+        if (open) {
+            this.closeSession(session);
+        }
     }
 
     public Session getSession() {
@@ -26,12 +47,25 @@ public class SessionExt {
         this.session = session;
     }
 
-    public Long getUniqueId() {
+    public String getUniqueId() {
         return uniqueId;
     }
 
-    public void setUniqueId(Long uniqueId) {
+    public void setUniqueId(String uniqueId) {
         this.uniqueId = uniqueId;
+    }
+
+    /**
+     * 关闭session
+     *
+     * @param session session
+     */
+    private void closeSession(Session session) {
+        try {
+            session.close();
+        } catch (IOException e) {
+            throw new RuntimeException("[websocket]关闭session" + e.getMessage());
+        }
     }
 
     @Override
