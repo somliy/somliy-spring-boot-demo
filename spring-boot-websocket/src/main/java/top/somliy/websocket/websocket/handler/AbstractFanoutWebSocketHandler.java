@@ -6,7 +6,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.socket.BinaryMessage;
 import org.springframework.web.socket.CloseStatus;
 import org.springframework.web.socket.TextMessage;
-import org.springframework.web.socket.WebSocketHandler;
 import org.springframework.web.socket.WebSocketMessage;
 import org.springframework.web.socket.WebSocketSession;
 import top.somliy.websocket.websocket.constants.WebSocketConstants;
@@ -17,27 +16,40 @@ import top.somliy.websocket.websocket.util.WebSocketUtil;
 
 import java.net.URI;
 import java.util.Map;
+import java.util.Objects;
 
 /**
- * 类名： @ClassName AbstractWebSocketHandler websocket抽象类
+ * 类名： @ClassName AbstractFanoutWebSocketHandler websocket抽象类
  * 创建人：@author zhao dong
  * 类描述：@Description: websocket抽象类
  * 创建时间: 2023/10/17 17:28
  */
 @Slf4j
-public abstract class AbstractWebSocketHandler implements WebSocketHandler {
+public abstract class AbstractFanoutWebSocketHandler implements FanoutWebSocketHandler {
     private static final WebSocketProperty WEB_SOCKET_PROPERTY = SpringUtil.getBean(WebSocketProperty.class);
     private static final SessionContainer SESSION_CONTAINER = SpringUtil.getBean(SessionContainer.class);
 
+    /**
+     * 获取请求参数
+     *
+     * @param session session
+     * @return 参数
+     */
+    private static String getUriParamKey(WebSocketSession session) {
+        URI uri = session.getUri();
+        Map<String, String> paramsFrom = WebSocketUtil.getParamsFromURI(Objects.requireNonNull(uri));
+        return paramsFrom.get(WebSocketConstants.STR_KEY);
+    }
+
     @Override
-    public void afterConnectionEstablished(WebSocketSession session) throws Exception {
+    public void afterConnectionEstablished(WebSocketSession session) {
         log.debug("[websocket]连接成功回调");
         URI uri = session.getUri();
-        Map<String, String> paramsFrom = WebSocketUtil.getParamsFromURI(uri);
+        Map<String, String> paramsFrom = WebSocketUtil.getParamsFromURI(Objects.requireNonNull(uri));
         SessionExt sessionExt = this.handleSession(session);
         String key = paramsFrom.get(WebSocketConstants.STR_KEY);
         SESSION_CONTAINER.addSessionExtAndClose(key, sessionExt);
-//        this.handleFanout(sessionExt, key);
+        this.handleFanoutMessage(key, sessionExt);
         this.onOpen(key, session);
     }
 
@@ -50,7 +62,7 @@ public abstract class AbstractWebSocketHandler implements WebSocketHandler {
     public abstract void onOpen(String key, WebSocketSession session);
 
     @Override
-    public void handleMessage(WebSocketSession session, WebSocketMessage<?> message) throws Exception {
+    public void handleMessage(WebSocketSession session, WebSocketMessage<?> message) {
         log.debug("[websocket]处理消息");
         if (message instanceof TextMessage) {
             this.handleTextMessage(session, (TextMessage) message);
@@ -76,14 +88,24 @@ public abstract class AbstractWebSocketHandler implements WebSocketHandler {
     public abstract void handleBinaryMessage(WebSocketSession session, BinaryMessage message);
 
     @Override
-    public void handleTransportError(WebSocketSession session, Throwable exception) throws Exception {
-        log.debug("[websocket]异常");
+    public void handleTransportError(WebSocketSession session, Throwable exception) {
+        log.error("[websocket]异常");
     }
 
     @Override
-    public void afterConnectionClosed(WebSocketSession session, CloseStatus closeStatus) throws Exception {
+    public void afterConnectionClosed(WebSocketSession session, CloseStatus closeStatus) {
         log.debug("[websocket]连接关闭回调");
+        String key = getUriParamKey(session);
+        this.onClose(key, session);
     }
+
+    /**
+     * 关闭后回调
+     *
+     * @param key     key
+     * @param session session
+     */
+    public abstract void onClose(String key, WebSocketSession session);
 
     @Override
     public boolean supportsPartialMessages() {

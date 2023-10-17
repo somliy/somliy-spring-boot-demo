@@ -25,10 +25,9 @@ import java.util.Map;
 public class ServletWebSocketHandshakeInterceptor implements HandshakeInterceptor {
     private static final DemoService DEMO_SERVICE = SpringUtil.getBean(DemoService.class);
 
-
     @Override
     public boolean beforeHandshake(ServerHttpRequest request, ServerHttpResponse response, WebSocketHandler wsHandler,
-                                   Map<String, Object> attributes) throws Exception {
+                                   Map<String, Object> attributes) {
         // 验证令牌
         log.debug("[websocket]连接前钩子");
         // 获取认证信息并验证用户角色等权限信息
