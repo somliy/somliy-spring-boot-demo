@@ -1,6 +1,7 @@
 package top.somliy.websocket.websocket.core;
 
-import javax.websocket.Session;
+import org.springframework.web.socket.WebSocketSession;
+
 import java.io.IOException;
 
 /**
@@ -11,7 +12,7 @@ import java.io.IOException;
  */
 public class SessionExt {
 
-    private Session session;
+    private WebSocketSession session;
 
     private String uniqueId;
 
@@ -39,11 +40,11 @@ public class SessionExt {
         }
     }
 
-    public Session getSession() {
+    public WebSocketSession getSession() {
         return session;
     }
 
-    public void setSession(Session session) {
+    public void setSession(WebSocketSession session) {
         this.session = session;
     }
 
@@ -60,7 +61,7 @@ public class SessionExt {
      *
      * @param session session
      */
-    private void closeSession(Session session) {
+    private void closeSession(WebSocketSession session) {
         try {
             session.close();
         } catch (IOException e) {

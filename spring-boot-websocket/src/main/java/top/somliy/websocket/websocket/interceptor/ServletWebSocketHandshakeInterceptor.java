@@ -1,15 +1,17 @@
 package top.somliy.websocket.websocket.interceptor;
 
+import cn.hutool.extra.spring.SpringUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.server.ServerHttpRequest;
 import org.springframework.http.server.ServerHttpResponse;
 import org.springframework.stereotype.Component;
+import org.springframework.util.MultiValueMap;
 import org.springframework.web.socket.WebSocketHandler;
 import org.springframework.web.socket.server.HandshakeInterceptor;
-import top.somliy.websocket.websocket.constants.WebSocketConstants;
+import org.springframework.web.util.UriComponents;
+import org.springframework.web.util.UriComponentsBuilder;
+import top.somliy.websocket.service.DemoService;
 
-import java.net.URI;
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -21,19 +23,24 @@ import java.util.Map;
 @Slf4j
 @Component
 public class ServletWebSocketHandshakeInterceptor implements HandshakeInterceptor {
+    private static final DemoService DEMO_SERVICE = SpringUtil.getBean(DemoService.class);
+
 
     @Override
     public boolean beforeHandshake(ServerHttpRequest request, ServerHttpResponse response, WebSocketHandler wsHandler,
                                    Map<String, Object> attributes) throws Exception {
         // 验证令牌
-        log.info("beforeHandshake");
+        log.debug("[websocket]连接前钩子");
         // 获取认证信息并验证用户角色等权限信息
-        return true;
+        UriComponents uriComponents = UriComponentsBuilder.fromHttpRequest(request).build();
+        MultiValueMap<String, String> queryParams = uriComponents.getQueryParams();
+        String key = queryParams.getFirst("key");
+        return DEMO_SERVICE.judgeUserKey(key);
     }
 
     @Override
     public void afterHandshake(ServerHttpRequest request, ServerHttpResponse response, WebSocketHandler wsHandler,
                                Exception exception) {
-        log.info("afterHandshake");
+        log.debug("[websocket]连接后钩子");
     }
 }

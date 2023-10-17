@@ -21,7 +21,7 @@ import top.somliy.websocket.websocket.interceptor.ServletWebSocketHandshakeInter
 @Configuration
 @EnableWebSocket
 public class ServletWebSocketServerConfigurer implements WebSocketConfigurer {
-    private static final String PREFIX = "/websocket/{key}";
+    private static final String PREFIX = "/websocket";
     @Autowired
     private ServletWebSocketServerHandler servletWebSocketServerHandler;
 

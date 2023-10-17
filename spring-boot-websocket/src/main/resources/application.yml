@@ -6,12 +6,7 @@ server:
 logging:
   level:
     top: debug
-    org:
-      springframework:
-        kafka: debug
-      apache:
-        kafka: debug
-    root: debug
+    root: info
 
 project:
   websocket:
