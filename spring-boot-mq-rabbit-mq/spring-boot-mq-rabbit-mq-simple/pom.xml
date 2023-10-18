@@ -8,10 +8,12 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
 
-    <artifactId>spring-boot-mq-rabbit-mq-consumer</artifactId>
+    <groupId>top.somliy</groupId>
+    <artifactId>spring-boot-mq-rabbit-mq-simple</artifactId>
+    <version>1.0.0-SNAPSHOT</version>
 
-    <name>spring-boot-mq-rabbit-mq-consumer</name>
-    <description>spring boot 集成 Rabbitmq 生产者示例</description>
+    <name>spring-boot-mq-rabbit-mq-simple</name>
+    <description>spring boot 集成 Rabbitmq 简单示例</description>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
