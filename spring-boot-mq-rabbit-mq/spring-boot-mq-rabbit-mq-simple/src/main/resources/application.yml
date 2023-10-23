@@ -3,7 +3,7 @@ server:
 
 spring:
   application:
-    name: spring-boot-mq-rabbit-mq-producer
+    name: spring-boot-mq-rabbit-mq-simple
 
   # RabbitMQ 配置项，对应 RabbitProperties 配置类
   rabbitmq:
