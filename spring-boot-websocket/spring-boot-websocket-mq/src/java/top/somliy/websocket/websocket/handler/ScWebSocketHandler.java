@@ -17,7 +17,7 @@ import top.somliy.websocket.websocket.dto.FanoutDTO;
  */
 @Slf4j
 @Component
-public class ScFanoutWebSocketHandler extends AbstractScWebSocketHandler {
+public class ScWebSocketHandler extends AbstractScWebSocketHandler {
     @Override
     public void handleTextMessage(WebSocketSession session, TextMessage message) {
         log.info("[websocket]文本消息：{}", message.toString());

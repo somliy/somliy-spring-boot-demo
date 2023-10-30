@@ -7,7 +7,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.web.socket.config.annotation.EnableWebSocket;
 import org.springframework.web.socket.config.annotation.WebSocketConfigurer;
 import org.springframework.web.socket.config.annotation.WebSocketHandlerRegistry;
-import top.somliy.websocket.websocket.handler.MqFanoutWebSocketServerHandler;
+import top.somliy.websocket.websocket.handler.ScWebSocketHandler;
 import top.somliy.websocket.websocket.interceptor.ServletWebSocketHandshakeInterceptor;
 
 
@@ -23,11 +23,11 @@ import top.somliy.websocket.websocket.interceptor.ServletWebSocketHandshakeInter
 public class ServletWebSocketServerConfigurer implements WebSocketConfigurer {
     private static final String PREFIX = "/websocket";
     @Autowired
-    private MqFanoutWebSocketServerHandler mqFanoutWebSocketServerHandler;
+    private ScWebSocketHandler scWebSocketHandler;
 
     @Override
     public void registerWebSocketHandlers(WebSocketHandlerRegistry registry) {
-        registry.addHandler(mqFanoutWebSocketServerHandler, PREFIX)
+        registry.addHandler(scWebSocketHandler, PREFIX)
                 // 添加拦截器可实现用户链接前进行权限校验等操作
                 .addInterceptors(new ServletWebSocketHandshakeInterceptor())
                 // 设置允许跨域访问
