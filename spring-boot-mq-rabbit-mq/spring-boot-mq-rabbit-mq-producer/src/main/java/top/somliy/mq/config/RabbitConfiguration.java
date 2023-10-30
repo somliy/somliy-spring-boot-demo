@@ -8,19 +8,20 @@ import org.springframework.beans.factory.annotation.Configurable;
 import org.springframework.context.annotation.Bean;
 
 /**
- * 类名： @ClassName RabbitTemplateWrapper 消息发送增强
+ * 类名： @ClassName RabbitConfiguration 配置
  * 创建人：@author zhao dong
- * 类描述：@Description: 消息发送增强
+ * 类描述：@Description: 配置
  * 创建时间: 2023/5/30 14:37
  */
 @Slf4j
 @Configurable
-public class RabbitTemplateWrapper {
+public class RabbitConfiguration {
     @Autowired
     private ConnectionFactory connectionFactory;
 
     /**
      * 初始化 RabbitTemplate 类
+     *
      * @return RabbitTemplate
      */
     @Bean
@@ -32,11 +33,8 @@ public class RabbitTemplateWrapper {
 
         // 开启确认机制
         rabbitTemplate.setConfirmCallback((correlationData, ack, cause) -> {
-            if (!ack) {
-                log.error("发送到交换机失败，correlationData：" + correlationData + "，cause：" + cause);
-            } else {
-                log.info("发送到交换机失败，correlationData：" + correlationData + "，cause：" + cause);
-            }
+            log.info("[确认消息送到交换机(Exchange)结果][相关数据:{}][是否成功:{}][错误原因:{}]", correlationData, ack,
+                    cause);
         });
 
         // 将开启returnedMessage属性并添加ReturnCallback

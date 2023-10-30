@@ -16,8 +16,8 @@ public final class RabbitMqConstant {
     /**
      * 路由键信息
      */
-    public static final String ROUTING_KEY_MESSAGE_PUSH = "routing.key.message.push.test";
-    public static final String QUEUE_TYPE_MESSAGE_PUSH = "queue_type_message_push_test";
+    public static final String ROUTING_KEY_MESSAGE_PUSH = "routing.key.message.push.test.topic";
+    public static final String QUEUE_TYPE_MESSAGE_PUSH = "queue_type_message_push_test_topic";
 
     /**
      * 路由键信息，延时

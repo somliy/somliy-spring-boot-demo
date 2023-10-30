@@ -1,14 +1,15 @@
 package top.somliy.mq.consumer;
 
+import com.rabbitmq.client.Channel;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.amqp.core.AcknowledgeMode;
-import org.springframework.amqp.rabbit.connection.ConnectionFactory;
-import org.springframework.amqp.rabbit.listener.SimpleMessageListenerContainer;
-import org.springframework.amqp.rabbit.listener.api.ChannelAwareMessageListener;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
+import org.springframework.amqp.core.Message;
+import org.springframework.amqp.rabbit.annotation.RabbitHandler;
+import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.stereotype.Component;
 import top.somliy.mq.constant.RabbitMqConstant;
+import top.somliy.mq.message.RabbitMqMessage;
+
+import java.io.IOException;
 
 /**
  * 类名： @ClassName RabbitMqConsumer 消费者
@@ -18,59 +19,31 @@ import top.somliy.mq.constant.RabbitMqConstant;
  */
 @Slf4j
 @Component
+@RabbitListener(queues = RabbitMqConstant.QUEUE_TYPE_MESSAGE_PUSH)
 public class RabbitMqConsumer {
-    @Autowired
-    private ConnectionFactory connectionFactory;
-
-    @Bean("test")
-    public SimpleMessageListenerContainer messageContainerTest() {
-        // 创建SimpleMessageListenerContainer容器
-        SimpleMessageListenerContainer container = new SimpleMessageListenerContainer();
-        // 设置连接工厂
-        container.setConnectionFactory(connectionFactory);
-        // 设置监听队列名字
-        container.setQueueNames(RabbitMqConstant.QUEUE_TYPE_MESSAGE_PUSH);
-        // 设置手动ACK模式
-        container.setAcknowledgeMode(AcknowledgeMode.MANUAL);
-        // 设置消息监听器
-        container.setMessageListener((ChannelAwareMessageListener) (message, channel) -> {
-            try {
-                String messageContent = new String(message.getBody());
-                // 处理收到的消息
-                log.info("【Received message】: " + messageContent);
-                // 手动ACK
-                channel.basicAck(message.getMessageProperties().getDeliveryTag(), false);
-            } catch (Exception e) {
-                // 发生异常时，调用 reject（或 nack）方法拒绝消息，并进入错误处理流程
-                channel.basicReject(message.getMessageProperties().getDeliveryTag(), true);
+    @RabbitHandler
+    public void onMessageAck(RabbitMqMessage rabbitMqMessage, Message message, Channel channel) throws IOException {
+        try {
+            log.info("[RabbitMqConsumer onMessageAck][线程编号:{} 消息内容：{}]", Thread.currentThread().getId(),
+                    rabbitMqMessage);
+            //  如果手动ACK,消息会被监听消费,但是消息在队列中依旧存在,如果 未配置 acknowledge-mode 默认是会在消费完毕后自动ACK掉
+            final long deliveryTag = message.getMessageProperties().getDeliveryTag();
+            // 取当前时间，达到一个随机效果，测试的话可以多跑几次试试
+            if (System.currentTimeMillis() % 2 == 1) {
+                // 通知 MQ 消息已被成功消费,可以ACK了
+                // 第二个参数 multiple ，用于批量确认消息，为了减少网络流量，手动确认可以被批处。
+                // 1. 当 multiple 为 true 时，则可以一次性确认 deliveryTag 小于等于传入值的所有消息
+                // 2. 当 multiple 为 false 时，则只确认当前 deliveryTag 对应的消息
+                channel.basicAck(deliveryTag, false);
+                log.info("[RabbitMqConsumer onMessageAck][正常ack:{}]", rabbitMqMessage);
+            } else {
+                log.info("[RabbitMqConsumer onMessageAck][未ack:{}]", rabbitMqMessage);
+                throw new RuntimeException("手动异常");
             }
-        });
-        return container;
-    }
-
-    @Bean("delayed")
-    public SimpleMessageListenerContainer messageContainer() {
-        // 创建SimpleMessageListenerContainer容器
-        SimpleMessageListenerContainer container = new SimpleMessageListenerContainer();
-        // 设置连接工厂
-        container.setConnectionFactory(connectionFactory);
-        // 设置监听队列名字
-        container.setQueueNames(RabbitMqConstant.QUEUE_TYPE_MESSAGE_PUSH_DELAYED);
-        // 设置手动ACK模式
-        container.setAcknowledgeMode(AcknowledgeMode.MANUAL);
-        // 设置消息监听器
-        container.setMessageListener((ChannelAwareMessageListener) (message, channel) -> {
-            try {
-                String messageContent = new String(message.getBody());
-                // 处理收到的消息
-                log.info("【Received message】: " + messageContent);
-                // 手动ACK
-                channel.basicAck(message.getMessageProperties().getDeliveryTag(), false);
-            } catch (Exception e) {
-                // 发生异常时，调用 reject（或 nack）方法拒绝消息，并进入错误处理流程
-                channel.basicReject(message.getMessageProperties().getDeliveryTag(), true);
-            }
-        });
-        return container;
+        } catch (Exception e) {
+            // 处理失败,重新压入MQ
+            channel.basicRecover();
+            log.info("[RabbitMqConsumer onMessageAck][消息重新压入MQ:{}]", rabbitMqMessage);
+        }
     }
 }

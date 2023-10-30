@@ -15,3 +15,9 @@ spring:
     # 确认消息已发送到队列(Queue)
     publisher-returns: true
     virtual-host: /test
+    # 手动提交消息
+    listener:
+      simple:
+        acknowledge-mode: manual
+      direct:
+        acknowledge-mode: manual

@@ -1,6 +1,5 @@
 package top.somliy.mq.producer;
 
-import cn.hutool.json.JSONUtil;
 import org.springframework.amqp.core.MessagePostProcessor;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,13 +11,13 @@ import java.time.LocalDateTime;
 import java.util.UUID;
 
 /**
- * 类名： @ClassName rabbitTemplatePush 生产者
+ * 类名： @ClassName RabbitMqProduceBean 生产者
  * 创建人：@author zhao dong
  * 类描述：@Description: 生产者
  * 创建时间: 2023/5/30 15:04
  */
 @Component
-public class RabbitTemplatePush {
+public class RabbitMqProduceBean {
     @Autowired
     private RabbitTemplate rabbitTemplate;
 
@@ -34,9 +33,8 @@ public class RabbitTemplatePush {
         String uuid = UUID.randomUUID().toString();
         message.setId(uuid);
         message.setSendTime(LocalDateTime.now());
-        String messageStr = JSONUtil.toJsonStr(message);
         // 同步发送消息
-        rabbitTemplate.convertAndSend(RabbitMqConstant.EXCHANGE, routingKey, messageStr);
+        rabbitTemplate.convertAndSend(RabbitMqConstant.EXCHANGE.getTopic(), routingKey, message);
     }
 
     /***
@@ -52,13 +50,13 @@ public class RabbitTemplatePush {
         String uuid = UUID.randomUUID().toString();
         message.setId(uuid);
         message.setSendTime(LocalDateTime.now());
-        String messageStr = JSONUtil.toJsonStr(message);
         MessagePostProcessor postProcessor = postProcessMessage -> {
             // 设置过期时间
             postProcessMessage.getMessageProperties().setHeader("x-delay", delay);
             return postProcessMessage;
         };
         // 发送延时消息
-        rabbitTemplate.convertAndSend(RabbitMqConstant.EXCHANGE_DELAYED, routingKey, messageStr, postProcessor);
+        rabbitTemplate.convertAndSend(RabbitMqConstant.EXCHANGE_DELAYED.getTopic(), routingKey, message,
+                postProcessor);
     }
 }

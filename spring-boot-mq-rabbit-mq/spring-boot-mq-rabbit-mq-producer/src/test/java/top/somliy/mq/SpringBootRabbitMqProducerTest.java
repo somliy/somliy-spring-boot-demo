@@ -6,7 +6,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import top.somliy.mq.constant.RabbitMqConstant;
-import top.somliy.mq.producer.RabbitTemplatePush;
+import top.somliy.mq.producer.RabbitMqProduceBean;
 
 /**
  * 类名： @ClassName SpringBootRabbitMqProducerTest
@@ -17,15 +17,14 @@ import top.somliy.mq.producer.RabbitTemplatePush;
 @Slf4j
 @SpringBootTest
 public class SpringBootRabbitMqProducerTest {
-
     @Autowired
-    private RabbitTemplatePush rabbitTemplatePush;
+    private RabbitMqProduceBean rabbitMqProduceBean;
 
     @SneakyThrows
     @Test
     void testSyncSend() {
         String string = "UUID.randomUUID().toString()";
-        rabbitTemplatePush.syncSend(string, RabbitMqConstant.ROUTING_KEY_MESSAGE_PUSH);
+        rabbitMqProduceBean.syncSend(string, RabbitMqConstant.ROUTING_KEY_MESSAGE_PUSH.getTopicRoutingKeySuffix());
         log.info("发送成功：" + string);
     }
 }

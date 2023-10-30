@@ -6,17 +6,17 @@ package top.somliy.mq.constant;
  * 类描述：@Description: 消息队列
  * 创建时间: 2023/5/30 15:08
  */
-public final class RabbitMqConstant {
+public class RabbitMqConstant {
     /**
      * 交换机名称
      */
-    public static final String EXCHANGE = "top.somliy.rabbit.mq.test";
-    public static final String EXCHANGE_DELAYED = "top.somliy.rabbit.mq.delayed.test";
+    public static final ExchangeBuilder EXCHANGE = ExchangeBuilder.create("top.somliy.rabbit.mq.test");
+    public static final ExchangeBuilder EXCHANGE_DELAYED = ExchangeBuilder.create("top.somliy.rabbit.mq.delayed.test");
     /**
      * 路由键信息
      */
-    public static final String ROUTING_KEY_MESSAGE_PUSH = "routing.key.message.push.test";
-    public static final String QUEUE_TYPE_MESSAGE_PUSH = "queue_type_message_push_test";
+    public static final SuffixBuilder ROUTING_KEY_MESSAGE_PUSH = SuffixBuilder.create("routing.key.message.push.test");
+    public static final SuffixBuilder QUEUE_TYPE_MESSAGE_PUSH = SuffixBuilder.create("queue_type_message_push_test");
     /**
      * 路由键信息，延时
      */
@@ -28,5 +28,13 @@ public final class RabbitMqConstant {
     public static final Integer TEN_SECONDS = 10 * 1000;
 
     private RabbitMqConstant() {
+    }
+
+    public static String getRoutingKeyMessagePush(RabbitMqEmus emus) {
+        return ROUTING_KEY_MESSAGE_PUSH + emus.getRoutingKey();
+    }
+
+    public static String getQueueTypeMessagePush(RabbitMqEmus emus) {
+        return QUEUE_TYPE_MESSAGE_PUSH + emus.getQueue();
     }
 }
