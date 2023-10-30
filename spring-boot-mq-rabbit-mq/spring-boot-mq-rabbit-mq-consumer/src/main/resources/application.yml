@@ -21,3 +21,9 @@ spring:
         acknowledge-mode: manual
       direct:
         acknowledge-mode: manual
+
+# 日志
+logging:
+  level:
+    root: info
+    top.somliy: info

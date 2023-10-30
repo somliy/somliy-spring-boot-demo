@@ -17,16 +17,8 @@ public final class ExchangeBuilder {
         return new ExchangeBuilder(baseString);
     }
 
-    public String getDirect() {
-        return baseString + RabbitMqEmus.Direct.getExchange();
-    }
-
     public String getFanout() {
         return baseString + RabbitMqEmus.Fanout.getExchange();
-    }
-
-    public String getHeaders() {
-        return baseString + RabbitMqEmus.Headers.getExchange();
     }
 
     public String getTopic() {

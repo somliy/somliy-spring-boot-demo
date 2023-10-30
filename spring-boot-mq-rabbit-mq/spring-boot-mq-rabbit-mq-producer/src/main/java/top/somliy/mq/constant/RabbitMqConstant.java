@@ -29,12 +29,4 @@ public class RabbitMqConstant {
 
     private RabbitMqConstant() {
     }
-
-    public static String getRoutingKeyMessagePush(RabbitMqEmus emus) {
-        return ROUTING_KEY_MESSAGE_PUSH + emus.getRoutingKey();
-    }
-
-    public static String getQueueTypeMessagePush(RabbitMqEmus emus) {
-        return QUEUE_TYPE_MESSAGE_PUSH + emus.getQueue();
-    }
 }

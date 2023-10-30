@@ -6,8 +6,11 @@ import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import top.somliy.mq.simple.constant.RabbitMqConstant;
+import top.somliy.mq.simple.rabbitmq.message.RabbitMqMessage;
 
 import javax.annotation.PostConstruct;
+import java.time.LocalDateTime;
+import java.util.UUID;
 
 /**
  * 类名： @ClassName RabbitAdminConfig RabbitMqPushBean配置类
@@ -52,8 +55,15 @@ public class RabbitMqPushBean {
         return rabbitAdmin;
     }
 
-    public void send(Object obj, String routingKey) {
-//        JsonMessage jsonMessage = JsonMessage.createJsonMessage(obj);
-        rabbitTemplate.convertAndSend(RabbitMqConstant.EXCHANGE, routingKey, JSONUtil.toJsonStr(obj));
+    public void send(String data, String routingKey) {
+        // 创建消息
+        RabbitMqMessage message = new RabbitMqMessage();
+        message.setData(data);
+        String uuid = UUID.randomUUID().toString();
+        message.setId(uuid);
+        message.setSendTime(LocalDateTime.now());
+        String messageStr = JSONUtil.toJsonStr(message);
+        // 同步发送消息
+        rabbitTemplate.convertAndSend(RabbitMqConstant.EXCHANGE, routingKey, messageStr);
     }
 }

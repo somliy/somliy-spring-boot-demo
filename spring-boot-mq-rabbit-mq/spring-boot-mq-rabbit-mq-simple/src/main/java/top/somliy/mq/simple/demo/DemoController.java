@@ -25,16 +25,10 @@ public class DemoController {
     @Autowired
     private RabbitMqPushBean rabbitMqPushBean;
 
-    @PostMapping("test")
-    public String test(@RequestBody String string) {
-        // 创建消息
-        RabbitMqMessage message = new RabbitMqMessage();
-        message.setData(string);
-        String uuid = UUID.randomUUID().toString();
-        message.setId(uuid);
-        message.setSendTime(LocalDateTime.now());
-        String messageStr = JSONUtil.toJsonStr(message);
-        rabbitMqPushBean.send(RabbitMqConstant.ROUTING_KEY_MESSAGE_PUSH, messageStr);
+    @PostMapping("send")
+    public String send() {
+        String string = "UUID.randomUUID().toString()" + System.currentTimeMillis();
+        rabbitMqPushBean.send(string, RabbitMqConstant.ROUTING_KEY_MESSAGE_PUSH);
         return "success";
     }
 }

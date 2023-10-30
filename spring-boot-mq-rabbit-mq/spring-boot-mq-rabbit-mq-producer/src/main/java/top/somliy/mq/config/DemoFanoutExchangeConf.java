@@ -2,7 +2,7 @@ package top.somliy.mq.config;
 
 import org.springframework.amqp.core.Binding;
 import org.springframework.amqp.core.BindingBuilder;
-import org.springframework.amqp.core.DirectExchange;
+import org.springframework.amqp.core.FanoutExchange;
 import org.springframework.amqp.core.Queue;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -15,7 +15,7 @@ import top.somliy.mq.constant.RabbitMqConstant;
  * 创建时间: 2023/5/30 15:24
  */
 @Configuration
-public class DemoDirectExchangeConf {
+public class DemoFanoutExchangeConf {
 
     /**
      * 创建一个 Queue
@@ -23,9 +23,20 @@ public class DemoDirectExchangeConf {
      * @return Queue
      */
     @Bean
-    public Queue queueDirect() {
+    public Queue queueDemoFanoutA() {
         // Queue:名字 | durable: 是否持久化 | exclusive: 是否排它 | autoDelete: 是否自动删除
-        return new Queue(RabbitMqConstant.QUEUE_TYPE_MESSAGE_PUSH.getDirectQueueSuffix(), true, false, false);
+        return new Queue(RabbitMqConstant.QUEUE_TYPE_MESSAGE_PUSH.getFanoutQueueSuffix() + "A", true, false, false);
+    }
+
+    /**
+     * 创建一个 Queue
+     *
+     * @return Queue
+     */
+    @Bean
+    public Queue queueDemoFanoutB() {
+        // Queue:名字 | durable: 是否持久化 | exclusive: 是否排它 | autoDelete: 是否自动删除
+        return new Queue(RabbitMqConstant.QUEUE_TYPE_MESSAGE_PUSH.getFanoutQueueSuffix() + "B", true, false, false);
     }
 
     /**
@@ -34,9 +45,9 @@ public class DemoDirectExchangeConf {
      * @return DirectExchange
      */
     @Bean
-    public DirectExchange exchangeDirect() {
+    public FanoutExchange exchangeDemoFanout() {
         // name: 交换机名字 | durable: 是否持久化 | exclusive: 是否排它
-        return new DirectExchange(RabbitMqConstant.EXCHANGE.getDirect(), true, false);
+        return new FanoutExchange(RabbitMqConstant.EXCHANGE.getFanout(), true, false);
     }
 
     /**
@@ -48,8 +59,12 @@ public class DemoDirectExchangeConf {
      * @return Binding
      */
     @Bean
-    public Binding bindingDirect() {
-        return BindingBuilder.bind(queueDirect()).to(exchangeDirect())
-                .with(RabbitMqConstant.ROUTING_KEY_MESSAGE_PUSH.getDirectRoutingKeySuffix());
+    public Binding bindingDirectA() {
+        return BindingBuilder.bind(queueDemoFanoutA()).to(exchangeDemoFanout());
+    }
+
+    @Bean
+    public Binding bindingDirectB() {
+        return BindingBuilder.bind(queueDemoFanoutB()).to(exchangeDemoFanout());
     }
 }

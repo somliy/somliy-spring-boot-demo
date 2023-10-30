@@ -15,3 +15,9 @@ spring:
     # 确认消息已发送到队列(Queue)
     publisher-returns: true
     virtual-host: /test
+
+# 日志
+logging:
+  level:
+    root: info
+    top.somliy: info

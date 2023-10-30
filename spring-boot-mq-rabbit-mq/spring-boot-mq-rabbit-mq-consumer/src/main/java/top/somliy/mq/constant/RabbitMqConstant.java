@@ -8,21 +8,12 @@ package top.somliy.mq.constant;
  */
 public final class RabbitMqConstant {
     /**
-     * 交换机名称
+     * 示例队列
      */
-    public static final String EXCHANGE = "top.somliy.rabbit.mq.test";
-    public static final String EXCHANGE_DELAYED = "top.somliy.rabbit.mq.delayed.test";
-
-    /**
-     * 路由键信息
-     */
-    public static final String ROUTING_KEY_MESSAGE_PUSH = "routing.key.message.push.test.topic";
     public static final String QUEUE_TYPE_MESSAGE_PUSH = "queue_type_message_push_test_topic";
-
     /**
-     * 路由键信息，延时
+     * 示例队列，延时
      */
-    public static final String ROUTING_KEY_MESSAGE_PUSH_DELAYED = "routing.key.message.push.delayed.test";
     public static final String QUEUE_TYPE_MESSAGE_PUSH_DELAYED = "queue_type_message_push_delayed_test";
 
     private RabbitMqConstant() {

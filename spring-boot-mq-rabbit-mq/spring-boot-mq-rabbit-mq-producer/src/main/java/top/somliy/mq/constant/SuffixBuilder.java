@@ -25,27 +25,11 @@ public final class SuffixBuilder {
         return baseString + RabbitMqEmus.Topic.getRoutingKey();
     }
 
-    public String getDirectQueueSuffix() {
-        return baseString + RabbitMqEmus.Direct.getQueue();
-    }
-
-    public String getDirectRoutingKeySuffix() {
-        return baseString + RabbitMqEmus.Direct.getRoutingKey();
-    }
-
     public String getFanoutQueueSuffix() {
         return baseString + RabbitMqEmus.Fanout.getQueue();
     }
 
     public String getFanoutRoutingKeySuffix() {
         return baseString + RabbitMqEmus.Fanout.getRoutingKey();
-    }
-
-    public String getHeadersQueueSuffix() {
-        return baseString + RabbitMqEmus.Headers.getQueue();
-    }
-
-    public String getHeadersRoutingKeySuffix() {
-        return baseString + RabbitMqEmus.Headers.getRoutingKey();
     }
 }

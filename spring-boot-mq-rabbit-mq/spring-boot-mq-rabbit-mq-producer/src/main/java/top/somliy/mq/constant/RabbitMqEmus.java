@@ -8,17 +8,9 @@ package top.somliy.mq.constant;
  */
 public enum RabbitMqEmus {
     /**
-     * Direct
-     */
-    Direct("Direct", ".direct", "_direct", ".direct"),
-    /**
      * Fanout
      */
     Fanout("Fanout", ".fanout", "_fanout", ".fanout"),
-    /**
-     * Headers
-     */
-    Headers("Headers", ".headers", "_headers", ".headers"),
     /**
      * Topic
      */
@@ -27,15 +19,15 @@ public enum RabbitMqEmus {
      * code
      */
     private final String code;
-    private final String routingKey;
-    private final String queue;
     private final String exchange;
+    private final String queue;
+    private final String routingKey;
 
-    RabbitMqEmus(String code, String routingKey, String queue, String exchange) {
+    RabbitMqEmus(String code, String exchange, String queue, String routingKey) {
         this.code = code;
-        this.routingKey = routingKey;
-        this.queue = queue;
         this.exchange = exchange;
+        this.queue = queue;
+        this.routingKey = routingKey;
     }
 
     public String getCode() {
