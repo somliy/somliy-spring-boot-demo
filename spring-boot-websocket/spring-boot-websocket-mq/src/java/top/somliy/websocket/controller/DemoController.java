@@ -16,9 +16,6 @@ import top.somliy.websocket.websocket.properties.WebSocketProperty;
 @RestController
 @RequestMapping("front/demo")
 public class DemoController {
-    public static void main(String[] args) {
-
-    }
 
     @Autowired
     private WebSocketProperty webSocketProperty;
@@ -28,5 +25,4 @@ public class DemoController {
         Long timeoutPeriod = webSocketProperty.getTimeoutPeriod();
         System.out.println(timeoutPeriod);
     }
-
 }

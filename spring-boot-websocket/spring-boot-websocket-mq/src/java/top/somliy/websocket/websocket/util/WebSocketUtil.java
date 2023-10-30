@@ -1,10 +1,12 @@
 package top.somliy.websocket.websocket.util;
 
+import org.springframework.web.socket.WebSocketSession;
 import top.somliy.websocket.websocket.constants.WebSocketConstants;
 
 import java.net.URI;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 
 /**
  * 类名： @ClassName WebSocketUtil 工具类
@@ -32,5 +34,17 @@ public final class WebSocketUtil {
             }
         }
         return params;
+    }
+
+    /**
+     * 获取请求参数
+     *
+     * @param session session
+     * @return 参数
+     */
+    public static String getUriParamKey(WebSocketSession session) {
+        URI uri = session.getUri();
+        Map<String, String> paramsFrom = WebSocketUtil.getParamsFromURI(Objects.requireNonNull(uri));
+        return paramsFrom.get(WebSocketConstants.STR_KEY);
     }
 }

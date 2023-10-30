@@ -23,8 +23,6 @@ import java.util.Map;
 @Slf4j
 @Component
 public class ServletWebSocketHandshakeInterceptor implements HandshakeInterceptor {
-    private static final DemoService DEMO_SERVICE = SpringUtil.getBean(DemoService.class);
-
     @Override
     public boolean beforeHandshake(ServerHttpRequest request, ServerHttpResponse response, WebSocketHandler wsHandler,
                                    Map<String, Object> attributes) {
@@ -34,7 +32,8 @@ public class ServletWebSocketHandshakeInterceptor implements HandshakeIntercepto
         UriComponents uriComponents = UriComponentsBuilder.fromHttpRequest(request).build();
         MultiValueMap<String, String> queryParams = uriComponents.getQueryParams();
         String key = queryParams.getFirst("key");
-        return DEMO_SERVICE.judgeUserKey(key);
+        DemoService demoService = SpringUtil.getBean(DemoService.class);
+        return demoService.judgeUserKey(key);
     }
 
     @Override
