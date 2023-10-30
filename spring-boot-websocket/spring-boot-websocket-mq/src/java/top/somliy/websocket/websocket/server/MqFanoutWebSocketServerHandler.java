@@ -43,10 +43,8 @@ public class MqFanoutWebSocketServerHandler extends AbstractFanoutWebSocketHandl
     @Override
     public void handleFanoutMessage(String key, SessionExt sessionExt) {
         if (sessionExt != null) {
-            String uniqueId = sessionExt.getUniqueId();
             FanoutDTO fanoutDTO = new FanoutDTO();
             fanoutDTO.setKey(key);
-            fanoutDTO.setUniqueId(uniqueId);
 //            RABBIT_MQ_PUSH_BEAN.sendJsonMsgFanout(fanoutDTO, RabbitMqConstants.ROUTING_KEY_WEBSOCKET_FANOUT);
         }
     }

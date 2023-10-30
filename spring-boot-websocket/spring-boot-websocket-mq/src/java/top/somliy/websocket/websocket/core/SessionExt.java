@@ -11,11 +11,7 @@ import java.io.IOException;
  * 创建时间: 2023/10/8 09:51
  */
 public class SessionExt {
-
     private WebSocketSession session;
-
-    private String uniqueId;
-
     private Integer version;
 
     public Integer getVersion() {
@@ -48,13 +44,6 @@ public class SessionExt {
         this.session = session;
     }
 
-    public String getUniqueId() {
-        return uniqueId;
-    }
-
-    public void setUniqueId(String uniqueId) {
-        this.uniqueId = uniqueId;
-    }
 
     /**
      * 关闭session
@@ -71,6 +60,6 @@ public class SessionExt {
 
     @Override
     public String toString() {
-        return "SessionExt{" + "session=" + session + ", uniqueId=" + uniqueId + '}';
+        return "SessionExt{" + "session=" + session + ", version=" + version + '}';
     }
 }
