@@ -1,4 +1,4 @@
-package top.somliy.websocket.websocket.fanout;
+package top.somliy.websocket.websocket.core.fanout;
 
 /**
  * 类名： @ClassName FanoutWebSocketHandler

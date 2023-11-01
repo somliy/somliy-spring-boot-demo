@@ -1,4 +1,4 @@
-package top.somliy.websocket.websocket.handler;
+package top.somliy.websocket.websocket.core.handler;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
@@ -10,14 +10,14 @@ import top.somliy.websocket.websocket.core.SessionExt;
 import top.somliy.websocket.websocket.dto.FanoutDTO;
 
 /**
- * 类名： @ClassName ScFanoutWebSocketHandler 消息处理器
+ * 类名： @ClassName MqWebSocketHandler 消息处理器
  * 创建人：@author zhao dong
  * 类描述：@Description: 消息处理器
  * 创建时间: 2023/10/8 11:49
  */
 @Slf4j
 @Component
-public class ScWebSocketHandler extends AbstractScWebSocketHandler {
+public class MqWebSocketHandler extends AbstractScWebSocketHandler {
     @Override
     public void handleTextMessage(WebSocketSession session, TextMessage message) {
         log.info("[websocket]文本消息：{}", message.toString());

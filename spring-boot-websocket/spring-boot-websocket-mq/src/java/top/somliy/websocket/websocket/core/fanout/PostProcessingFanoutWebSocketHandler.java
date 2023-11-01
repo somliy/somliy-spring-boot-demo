@@ -1,28 +1,22 @@
-package top.somliy.websocket.websocket.fanout;
+package top.somliy.websocket.websocket.core.fanout;
 
 import cn.hutool.extra.spring.SpringUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
-import org.springframework.web.socket.WebSocketSession;
 import top.somliy.websocket.websocket.constants.WebSocketConstants;
 import top.somliy.websocket.websocket.core.SessionContainer;
 import top.somliy.websocket.websocket.core.SessionExt;
 import top.somliy.websocket.websocket.dto.FanoutDTO;
-import top.somliy.websocket.websocket.util.WebSocketUtil;
-
-import java.net.URI;
-import java.util.Map;
-import java.util.Objects;
 
 /**
- * 类名： @ClassName AbstractFanoutWebSocketHandler websocket抽象类
+ * 类名： @ClassName PostProcessingFanoutWebSocketHandler websocket抽象类
  * 创建人：@author zhao dong
  * 类描述：@Description: websocket抽象类
  * 创建时间: 2023/10/17 17:28
  */
 @Slf4j
 @Component
-public class ScFanoutWebSocketHandler implements FanoutWebSocketHandler {
+public class PostProcessingFanoutWebSocketHandler implements FanoutWebSocketHandler {
     private static final SessionContainer SESSION_CONTAINER = SpringUtil.getBean(SessionContainer.class);
 
     /**
