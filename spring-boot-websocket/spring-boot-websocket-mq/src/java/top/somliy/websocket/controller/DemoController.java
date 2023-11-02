@@ -1,11 +1,9 @@
 package top.somliy.websocket.controller;
 
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import top.somliy.websocket.websocket.properties.WebSocketProperty;
 
 /**
  * 类名： @ClassName DemoController demo
@@ -17,12 +15,8 @@ import top.somliy.websocket.websocket.properties.WebSocketProperty;
 @RequestMapping("front/demo")
 public class DemoController {
 
-    @Autowired
-    private WebSocketProperty webSocketProperty;
+    @PostMapping("send")
+    public void send() {
 
-    @PostMapping("demo01")
-    public void test() {
-        Long timeoutPeriod = webSocketProperty.getTimeoutPeriod();
-        System.out.println(timeoutPeriod);
     }
 }

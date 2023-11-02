@@ -1,11 +1,15 @@
 package top.somliy.websocket.websocket.rabbitmq.consumer;
 
+import cn.hutool.json.JSONUtil;
 import com.rabbitmq.client.Channel;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.amqp.core.Message;
 import org.springframework.amqp.rabbit.annotation.RabbitHandler;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import top.somliy.websocket.websocket.core.fanout.PostProcessingFanoutWebSocketHandler;
+import top.somliy.websocket.websocket.dto.FanoutDTO;
 import top.somliy.websocket.websocket.rabbitmq.constant.RabbitMqConsumerConstant;
 import top.somliy.websocket.websocket.rabbitmq.message.RabbitMqMessage;
 
@@ -19,8 +23,11 @@ import java.io.IOException;
  */
 @Slf4j
 @Component
-@RabbitListener(queues = RabbitMqConsumerConstant.QUEUE_TYPE_MESSAGE_PUSH)
+@RabbitListener(queues = RabbitMqConsumerConstant.QUEUE_TYPE_MESSAGE_PUSH_FANOUT)
 public class RabbitMqConsumer {
+    @Autowired
+    private PostProcessingFanoutWebSocketHandler postProcessingFanoutWebSocketHandler;
+
     @RabbitHandler
     public void onMessageAck(RabbitMqMessage rabbitMqMessage, Message message, Channel channel) throws IOException {
         try {
@@ -28,15 +35,17 @@ public class RabbitMqConsumer {
                     rabbitMqMessage);
             //  如果手动ACK,消息会被监听消费,但是消息在队列中依旧存在,如果 未配置 acknowledge-mode 默认是会在消费完毕后自动ACK掉
             final long deliveryTag = message.getMessageProperties().getDeliveryTag();
-            // 取当前时间，达到一个随机效果，测试的话可以多跑几次试试
-            if (System.currentTimeMillis() % 2 == 1) {
+            try {
+                String data = rabbitMqMessage.getData();
+                FanoutDTO fanoutDTO = JSONUtil.toBean(data, FanoutDTO.class);
+                postProcessingFanoutWebSocketHandler.handleFanoutMessage(fanoutDTO);
                 // 通知 MQ 消息已被成功消费,可以ACK了
                 // 第二个参数 multiple ，用于批量确认消息，为了减少网络流量，手动确认可以被批处。
                 // 1. 当 multiple 为 true 时，则可以一次性确认 deliveryTag 小于等于传入值的所有消息
                 // 2. 当 multiple 为 false 时，则只确认当前 deliveryTag 对应的消息
                 channel.basicAck(deliveryTag, false);
                 log.info("[RabbitMqConsumer onMessageAck][正常ack:{}]", rabbitMqMessage);
-            } else {
+            } catch (Exception e) {
                 log.info("[RabbitMqConsumer onMessageAck][未ack:{}]", rabbitMqMessage);
                 throw new RuntimeException("手动异常");
             }

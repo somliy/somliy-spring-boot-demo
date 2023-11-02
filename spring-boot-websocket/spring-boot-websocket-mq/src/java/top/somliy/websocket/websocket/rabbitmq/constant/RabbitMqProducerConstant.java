@@ -11,17 +11,11 @@ public class RabbitMqProducerConstant {
      * 交换机名称
      */
     public static final String EXCHANGE = "top.somliy.rabbit.mq.test";
-    public static final String EXCHANGE_DELAYED = "top.somliy.rabbit.mq.delayed.test";
+    public static final String EXCHANGE_FANOUT = "top.somliy.rabbit.mq.test.fanout";
     /**
      * 路由键信息
      */
-    public static final String ROUTING_KEY_MESSAGE_PUSH = "routing.key.message.push.test";
-    public static final String QUEUE_TYPE_MESSAGE_PUSH = "queue_type_message_push_test";
-    /**
-     * 路由键信息，延时
-     */
-    public static final String ROUTING_KEY_MESSAGE_PUSH_DELAYED = "routing.key.message.push.delayed.test";
-    public static final String QUEUE_TYPE_MESSAGE_PUSH_DELAYED = "queue_type_message_push_delayed_test";
+    public static final String QUEUE_TYPE_MESSAGE_PUSH_FANOUT = "queue_type_message_push_test_fanout";
     /**
      * 十秒
      */

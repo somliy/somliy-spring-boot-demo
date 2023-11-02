@@ -10,8 +10,8 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
  * 创建时间: 2023/10/7 14:03
  */
 @SpringBootApplication
-public class SpringBootWebsocketApplication {
+public class SpringBootWebsocketMqApplication {
     public static void main(String[] args) {
-        SpringApplication.run(SpringBootWebsocketApplication.class, args);
+        SpringApplication.run(SpringBootWebsocketMqApplication.class, args);
     }
 }

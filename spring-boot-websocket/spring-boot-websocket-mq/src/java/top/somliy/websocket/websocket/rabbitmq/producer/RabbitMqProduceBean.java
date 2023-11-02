@@ -1,6 +1,6 @@
 package top.somliy.websocket.websocket.rabbitmq.producer;
 
-import org.springframework.amqp.core.MessagePostProcessor;
+import cn.hutool.json.JSONUtil;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -23,10 +23,11 @@ public class RabbitMqProduceBean {
 
     /***
      * 发送消息
-     * @param data 消息
+     * @param obj 消息
      * @param routingKey 路由键
      */
-    public void syncSend(String data, String routingKey) {
+    public void syncSend(Object obj, String routingKey) {
+        String data = JSONUtil.toJsonStr(obj);
         // 创建消息
         RabbitMqMessage message = new RabbitMqMessage();
         message.setData(data);
@@ -38,25 +39,18 @@ public class RabbitMqProduceBean {
     }
 
     /***
-     * 发送延时消息
-     * @param data 消息
-     * @param routingKey 路由键
-     * @param delay  时间
+     * 发送消息
+     * @param obj 消息
      */
-    public void syncSendDelayed(String data, String routingKey, int delay) {
+    public void syncFanoutSend(Object obj) {
+        String data = JSONUtil.toJsonStr(obj);
         // 创建消息
         RabbitMqMessage message = new RabbitMqMessage();
         message.setData(data);
         String uuid = UUID.randomUUID().toString();
         message.setId(uuid);
         message.setSendTime(LocalDateTime.now());
-        MessagePostProcessor postProcessor = postProcessMessage -> {
-            // 设置过期时间
-            postProcessMessage.getMessageProperties().setHeader("x-delay", delay);
-            return postProcessMessage;
-        };
-        // 发送延时消息
-        rabbitTemplate.convertAndSend(RabbitMqProducerConstant.EXCHANGE_DELAYED, routingKey, message,
-                postProcessor);
+        // 同步发送消息
+        rabbitTemplate.convertAndSend(RabbitMqProducerConstant.EXCHANGE_FANOUT, "", message);
     }
 }

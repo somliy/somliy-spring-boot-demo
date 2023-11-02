@@ -5,7 +5,7 @@ import org.springframework.amqp.core.BindingBuilder;
 import org.springframework.amqp.core.FanoutExchange;
 import org.springframework.amqp.core.Queue;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
+import org.springframework.stereotype.Component;
 import top.somliy.websocket.websocket.rabbitmq.constant.RabbitMqProducerConstant;
 
 /**
@@ -14,7 +14,7 @@ import top.somliy.websocket.websocket.rabbitmq.constant.RabbitMqProducerConstant
  * 类描述：@Description: 交换机、路由键配置
  * 创建时间: 2023/5/30 15:24
  */
-@Configuration
+@Component
 public class FanoutExchangeConf {
 
     /**
@@ -23,20 +23,9 @@ public class FanoutExchangeConf {
      * @return Queue
      */
     @Bean
-    public Queue queueDemoFanoutA() {
+    public Queue queueDemoFanout() {
         // Queue:名字 | durable: 是否持久化 | exclusive: 是否排它 | autoDelete: 是否自动删除
-        return new Queue(RabbitMqProducerConstant.QUEUE_TYPE_MESSAGE_PUSH + "A", true, false, false);
-    }
-
-    /**
-     * 创建一个 Queue
-     *
-     * @return Queue
-     */
-    @Bean
-    public Queue queueDemoFanoutB() {
-        // Queue:名字 | durable: 是否持久化 | exclusive: 是否排它 | autoDelete: 是否自动删除
-        return new Queue(RabbitMqProducerConstant.QUEUE_TYPE_MESSAGE_PUSH + "B", true, false, false);
+        return new Queue(RabbitMqProducerConstant.QUEUE_TYPE_MESSAGE_PUSH_FANOUT, true, false, true);
     }
 
     /**
@@ -47,7 +36,7 @@ public class FanoutExchangeConf {
     @Bean
     public FanoutExchange exchangeDemoFanout() {
         // name: 交换机名字 | durable: 是否持久化 | exclusive: 是否排它
-        return new FanoutExchange(RabbitMqProducerConstant.EXCHANGE, true, false);
+        return new FanoutExchange(RabbitMqProducerConstant.EXCHANGE_FANOUT, true, false);
     }
 
     /**
@@ -59,12 +48,7 @@ public class FanoutExchangeConf {
      * @return Binding
      */
     @Bean
-    public Binding bindingDirectA() {
-        return BindingBuilder.bind(queueDemoFanoutA()).to(exchangeDemoFanout());
-    }
-
-    @Bean
-    public Binding bindingDirectB() {
-        return BindingBuilder.bind(queueDemoFanoutB()).to(exchangeDemoFanout());
+    public Binding bindingDirect() {
+        return BindingBuilder.bind(queueDemoFanout()).to(exchangeDemoFanout());
     }
 }
