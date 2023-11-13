@@ -5,7 +5,7 @@ import org.springframework.amqp.core.BindingBuilder;
 import org.springframework.amqp.core.FanoutExchange;
 import org.springframework.amqp.core.Queue;
 import org.springframework.context.annotation.Bean;
-import org.springframework.stereotype.Component;
+import org.springframework.context.annotation.Configuration;
 import top.somliy.mq.constant.RabbitMqConstant;
 
 /**
@@ -14,7 +14,7 @@ import top.somliy.mq.constant.RabbitMqConstant;
  * 类描述：@Description: 交换机、路由键配置
  * 创建时间: 2023/5/30 15:24
  */
-@Component
+@Configuration
 public class DemoFanoutExchangeConf {
 
     /**
