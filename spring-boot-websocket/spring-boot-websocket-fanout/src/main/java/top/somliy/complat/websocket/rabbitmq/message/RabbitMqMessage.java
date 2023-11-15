@@ -18,6 +18,16 @@ public class RabbitMqMessage implements Serializable {
 
     private LocalDateTime sendTime;
 
+    private Integer time;
+
+    public Integer getTime() {
+        return time;
+    }
+
+    public void setTime(Integer time) {
+        this.time = time;
+    }
+
     public String getId() {
         return id;
     }

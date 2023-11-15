@@ -8,11 +8,20 @@ package top.somliy.complat.websocket.dto;
  */
 public class FanoutDTO {
     /**
-     * 1开启 2关闭
+     * 0消息 1开启 2关闭
      */
     private String type;
     private String key;
     private String uniqueId;
+    private String data;
+
+    public String getData() {
+        return data;
+    }
+
+    public void setData(String data) {
+        this.data = data;
+    }
 
     public String getUniqueId() {
         return uniqueId;

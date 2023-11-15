@@ -23,4 +23,12 @@ public interface FanoutWebSocketHandler {
      * @param uniqueId 连接唯一标识
      */
     void handleCloseProcessing(String key, String uniqueId);
+
+    /**
+     * 广播处理消息
+     *
+     * @param key  用户连接标识
+     * @param data 消息
+     */
+    void handleSendMessage(String key, String data);
 }

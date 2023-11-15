@@ -1,5 +1,6 @@
 package top.somliy.complat.websocket.core;
 
+import org.springframework.web.socket.TextMessage;
 import org.springframework.web.socket.WebSocketSession;
 
 import java.io.IOException;
@@ -36,6 +37,20 @@ public class SessionExt {
         }
     }
 
+    /**
+     * 发送消息
+     */
+    public void sendMessage(String message) {
+        boolean open = session.isOpen();
+        if (open) {
+            try {
+                session.sendMessage(new TextMessage(message));
+            } catch (IOException e) {
+                throw new RuntimeException("[websocket]发送消息失败", e);
+            }
+        }
+    }
+
     public WebSocketSession getSession() {
         return session;
     }
@@ -43,7 +58,6 @@ public class SessionExt {
     public void setSession(WebSocketSession session) {
         this.session = session;
     }
-
 
     /**
      * 关闭session

@@ -17,7 +17,7 @@ public class RabbitMqConstant {
      */
     public static final String QUEUE_TYPE_MESSAGE_PUSH_FANOUT = "queue_type_message_push_test_fanout";
     /**
-     * 十秒
+     * 十秒QUEUE_TYPE_MESSAGE_PUSH_FANOUT
      */
     public static final Integer TEN_SECONDS = 10 * 1000;
 

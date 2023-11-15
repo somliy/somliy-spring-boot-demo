@@ -32,9 +32,13 @@ public class PostProcessingFanoutWebSocketHandler implements FanoutWebSocketHand
         if (WebSocketConstants.STR_1.equals(type)) {
             log.debug("[websocket]广播，连接后置处理，key：" + key);
             this.handleOpenProcessing(key, uniqueId);
-        } else {
+        } else if (WebSocketConstants.STR_2.equals(type)) {
             log.debug("[websocket]广播，关闭后置处理，key：" + key);
             this.handleCloseProcessing(key, uniqueId);
+        } else {
+            log.debug("[websocket]广播处理消息，key：" + key);
+            String data = fanoutDTO.getData();
+            this.handleSendMessage(key, data);
         }
     }
 
@@ -64,5 +68,15 @@ public class PostProcessingFanoutWebSocketHandler implements FanoutWebSocketHand
             }
         }
         log.info("[websocket]广播，关闭后置处理，完成");
+    }
+
+    @Override
+    public void handleSendMessage(String key, String data) {
+        log.debug("[websocket]广播处理消息，key：" + key);
+        SessionExt sessionExt = SESSION_CONTAINER.getSessionExt(key);
+        if (sessionExt != null) {
+            sessionExt.sendMessage(data);
+            log.info("[websocket]广播处理消息，完成");
+        }
     }
 }

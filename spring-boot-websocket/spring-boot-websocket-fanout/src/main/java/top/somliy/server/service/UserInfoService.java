@@ -17,6 +17,6 @@ public class UserInfoService {
      * @return 结果
      */
     public boolean judgeUserKey(String key) {
-        return true;
+        return "123".equals(key) || "12".equals(key);
     }
 }
