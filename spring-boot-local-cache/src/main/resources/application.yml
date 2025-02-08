@@ -1,0 +1,10 @@
+server:
+  servlet: # 建议与name一致
+    context-path: /spring-boot-local-cache
+  port: 9094
+
+spring:
+
+  devtools:
+    restart:
+      enable: true

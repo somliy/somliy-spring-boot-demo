@@ -21,6 +21,7 @@
         <module>spring-boot-date-serialize</module>
         <module>spring-boot-current-limiting</module>
         <module>spring-boot-websocket/spring-boot-websocket-fanout</module>
+        <module>spring-boot-local-cache</module>
     </modules>
 
 </project>
